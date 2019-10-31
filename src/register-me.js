@@ -43,4 +43,3 @@ export default class RegisterMe extends React.Component {
 		</form>;
 	}
 }
-//2019-10-28

@@ -8,13 +8,14 @@ export default class Slate extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-        message2: 'x',
         message: this.props.message,
+        messageDirty: false,
         messageSubmitButtonText: 'Submit message',
         hasError: false
     };
     this.textAreaRef = React.createRef();
     this.handleClick = this.handleClick.bind(this);
+    this.onMessageChange = this.onMessageChange.bind(this);
   }
   
   static getDerivedStateFromError(error) {
@@ -23,6 +24,19 @@ export default class Slate extends React.Component {
   
   getContent(event) {
     this.props.callback(event.target.value);
+  }
+  
+  onMessageChange(e) {
+    if(e.target.value !== this.props.message) {
+      this.setState({
+        messageDirty: true
+      })
+    }
+    else {
+      this.setState({
+        messageDirty: false
+      })
+    }
   }
   
   handleClick(e) {
@@ -75,21 +89,14 @@ export default class Slate extends React.Component {
     if (this.state.hasError) {
       return <h1>Something went wrong.</h1>;
     }
-    let messageForm = <form id="messageForm">
-    <div><label>Message:</label></div>
-    <textarea id="messageTextArea" rows="10" cols="50" maxLength={this.props.messageMaxLength} ref={this.textAreaRef} defaultValue={this.props.message} onChange={this.onChange}></textarea>
-    <p id="readStatus">{this.props.readStatus}</p>
-    <input type="submit" onClick={this.handleClick} onChange={this.getContent.bind(this)}/>
-  </form>;
     return <div id="slate">
       <form id="messageForm">
         <div><label>Message:</label></div>
-        <textarea id="messageTextArea" rows="10" cols="50" maxLength={this.props.messageMaxLength} ref={this.textAreaRef} defaultValue={this.props.message} onChange={this.onChange}></textarea>
+        <textarea id="messageTextArea" rows="10" cols="50" maxLength={this.props.messageMaxLength} ref={this.textAreaRef} defaultValue={this.props.message} onChange={this.onMessageChange}></textarea>
         <p id="readStatus">{this.props.readStatus}</p>
-        <input type="submit" value={this.state.messageSubmitButtonText} onClick={this.handleClick} onChange={this.getContent.bind(this)}/>
+        <input disabled={this.state.messageDirty ? false : 'disabled'} type="submit" value={this.state.messageSubmitButtonText} onClick={this.handleClick} onChange={this.getContent.bind(this)}/>
       </form>
         {location.href.match(/slate\/(.*?)\//)[1] === '123' ? <RegisterMe /> : ''}
-        
     </div>
   }
 }
