@@ -7,10 +7,12 @@ import RegisterMe from './register-me'
 export default class Slate extends React.Component {
   constructor(props){
     super(props);
+    this.messageNonDirtySubmitButtonText = 'Change the message to enable submit'
     this.state = {
         message: this.props.message,
         messageDirty: false,
         messageSubmitButtonText: 'Submit message',
+        messageNonDirtySubmitButtonText: this.messageNonDirtySubmitButtonText,
         hasError: false
     };
     this.textAreaRef = React.createRef();
@@ -29,12 +31,14 @@ export default class Slate extends React.Component {
   onMessageChange(e) {
     if(e.target.value !== this.props.message) {
       this.setState({
-        messageDirty: true
+        messageDirty: true,
+        messageSubmitButtonText: 'Submit message'
       })
     }
     else {
       this.setState({
-        messageDirty: false
+        messageDirty: false,
+        messageSubmitButtonText: this.messageNonDirtySubmitButtonText,//'Change the message to enable submit'
       })
     }
   }
@@ -83,12 +87,14 @@ export default class Slate extends React.Component {
     this.setState({
       message: this.props.message
     })
+    this.state.messageSubmitButtonText = this.state.messageNonDirtySubmitButtonText;
   }
   
   render() {
     if (this.state.hasError) {
       return <h1>Something went wrong.</h1>;
     }
+//  this.state.messageDirty ? this.state.messageSubmitButtonText : this.messageNonDirtySubmitButtonText
     return <div id="slate">
       <form id="messageForm">
         <div><label>Message:</label></div>
