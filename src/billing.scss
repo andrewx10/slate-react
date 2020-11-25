@@ -1,3 +1,8 @@
+/*
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+*/
+@import "~bootstrap";
+
 body {
     font-family: Arial;
 }
@@ -81,10 +86,4 @@ span.light {
 
 .g-recaptcha-wrapper {
 	line-height: 0;
-}
-
-/*
-*/
-.register-me p {
-	color: #aaa;
 }
